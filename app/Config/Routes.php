@@ -5,9 +5,16 @@ use CodeIgniter\Router\RouteCollection;
 /*
  * @var RouteCollection $routes
  */
-$routes->get('questionnaires', 'QuestionnaireController::index');
 $routes->addRedirect('/', 'questionnaires');
+$routes->get('questionnaires', 'QuestionnaireController::index');
+$routes->get('questionnaires/(:num)', 'QuestionnaireController::view/$1');
 $routes->get('questionnaires/create', 'QuestionnaireController::create');
 $routes->get('questionnaires/edit/(:num)', 'QuestionnaireController::edit/$1');
-$routes->post('questionnaires/store', 'QuestionnaireController::store');
 $routes->post('questionnaires/delete/(:num)', 'QuestionnaireController::delete/$1');
+$routes->post('questionnaires/store', 'QuestionnaireController::store');
+
+$routes->post('questions/store', 'QuestionController::store');
+$routes->post('questions/delete/(:num)', 'QuestionController::delete/$1');
+
+$routes->post('answers/store', 'AnswerController::store');
+$routes->post('answers/delete/(:num)', 'AnswerController::delete/$1');
