@@ -21,6 +21,11 @@ class AnswerService
         ]);
     }
 
+    public function deleteAnswer(int $id)
+    {
+        return $this->answerModel->delete($id);
+    }
+
     public function getAnswersByQuestionId(int $questionId)
     {
         return $this->answerModel->where('question_id', $questionId)->findAll();

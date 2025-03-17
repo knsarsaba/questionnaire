@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Services\AnswerService;
 use App\Services\QuestionnaireService;
 use App\Services\QuestionService;
 use App\Services\SubmissionService;
@@ -49,6 +50,15 @@ class Services extends BaseService
         }
 
         return new QuestionService();
+    }
+
+    public static function answerService($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('answerService');
+        }
+
+        return new AnswerService();
     }
 
     public static function submissionService($getShared = true)
