@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Models\AnswerModel;
+use App\Models\QuestionnaireModel;
 use App\Services\AnswerService;
 use App\Services\QuestionnaireService;
 use App\Services\QuestionService;
@@ -41,7 +42,7 @@ class Services extends BaseService
             return static::getSharedInstance('questionnaireService');
         }
 
-        return new QuestionnaireService();
+        return new QuestionnaireService(model(QuestionnaireModel::class));
     }
 
     public static function questionService($getShared = true)

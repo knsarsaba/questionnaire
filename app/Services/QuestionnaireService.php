@@ -3,31 +3,25 @@
 namespace App\Services;
 
 use App\Models\QuestionnaireModel;
+use App\Services\Contracts\QuestionnaireServiceInterface;
 
-class QuestionnaireService
+class QuestionnaireService implements QuestionnaireServiceInterface
 {
-    protected $questionnaireModel;
+    protected QuestionnaireModel $questionnaireModel;
 
-    public function __construct()
+    public function __construct(QuestionnaireModel $questionnaireModel)
     {
-        $this->questionnaireModel = model(QuestionnaireModel::class);
+        $this->questionnaireModel = $questionnaireModel;
     }
 
-    public function getQuestionnaireById($id)
+    public function getQuestionnaireById(int $id)
     {
         return $this->questionnaireModel->find($id);
     }
 
-    public function getAllQuestionnaires()
+    public function getAllQuestionnaires(): array
     {
         return $this->questionnaireModel->findAll();
-    }
-
-    public function deleteQuestionnaire($id)
-    {
-        $questionnaireModel = model(QuestionnaireModel::class);
-
-        return $questionnaireModel->delete($id);
     }
 
     public function createQuestionnaire(string $name)
@@ -35,8 +29,15 @@ class QuestionnaireService
         return $this->questionnaireModel->insert(['name' => $name]);
     }
 
-    public function updateQuestionnaire($id, $name)
+    public function updateQuestionnaire(int $id, $name)
     {
         return $this->questionnaireModel->update($id, ['name' => $name]);
+    }
+
+    public function deleteQuestionnaire(int $id)
+    {
+        $questionnaireModel = model(QuestionnaireModel::class);
+
+        return $questionnaireModel->delete($id);
     }
 }
