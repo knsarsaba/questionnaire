@@ -36,8 +36,6 @@ class QuestionnaireService implements QuestionnaireServiceInterface
 
     public function deleteQuestionnaire(int $id)
     {
-        $questionnaireModel = model(QuestionnaireModel::class);
-
-        return $questionnaireModel->delete($id);
+        return $this->questionnaireModel->delete($id);
     }
 }
