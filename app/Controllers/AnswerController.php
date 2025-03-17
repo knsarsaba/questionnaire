@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Services\Contracts\AnswerServiceInterface;
+
 class AnswerController extends BaseController
 {
-    protected $answerService;
+    protected AnswerServiceInterface $answerService;
 
     public function __construct()
     {
