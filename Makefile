@@ -25,6 +25,10 @@ help:
 	@echo "  make db-import        - Import a database dump (Usage: make db-import file=backup.sql)"
 	@echo "  make build            - Build the application"
 	@echo "  make clean            - Clean up Docker resources"
+	@echo "  make test             - Run all PHPUnit tests"
+	@echo "  make test-file        - Run a specific PHPUnit test file (Usage: make test-file file=tests/app/ExampleTest.php)"
+	@echo "  make test-filter      - Run a specific test method (Usage: make test-filter filter=testMethodName)"
+	@echo "  make test-coverage    - Run tests with coverage reporting"
 
 # Setup the application
 .PHONY: setup
@@ -103,3 +107,23 @@ build:
 .PHONY: clean
 clean:
 	docker system prune -f
+
+# Run all tests
+.PHONY: test
+test:
+	docker exec -it $(APP_CONTAINER) php vendor/bin/phpunit --testdox
+
+# Run a specific test file (Usage: make test-file file=tests/app/ExampleTest.php)
+.PHONY: test-file
+test-file:
+	docker exec -it $(APP_CONTAINER) php vendor/bin/phpunit --testdox $(file)
+
+# Run a specific test by method name (Usage: make test-filter filter=testMethodName)
+.PHONY: test-filter
+test-filter:
+	docker exec -it $(APP_CONTAINER) php vendor/bin/phpunit --testdox --filter $(filter)
+
+# Run tests with code coverage
+.PHONY: test-coverage
+test-coverage:
+	docker exec -it $(APP_CONTAINER) php vendor/bin/phpunit --coverage-text
