@@ -18,3 +18,5 @@ $routes->post('questions/delete/(:num)', 'QuestionController::delete/$1');
 
 $routes->post('answers/store', 'AnswerController::store');
 $routes->post('answers/delete/(:num)', 'AnswerController::delete/$1');
+
+$routes->get('submissions/create/(:num)', 'SubmissionController::create/$1');
