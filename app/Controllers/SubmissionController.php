@@ -89,6 +89,6 @@ class SubmissionController extends BaseController
             return redirect()->back()->with('error', $importResult['message']);
         }
 
-        return redirect()->back()->with('success', 'Submissions imported successfully.');
+        return redirect()->to('/questionnaires')->with('success', 'Submissions imported successfully.');
     }
 }
