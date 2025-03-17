@@ -3,14 +3,20 @@
 namespace App\Services;
 
 use App\Models\AnswerModel;
+use App\Services\Contracts\AnswerServiceInterface;
 
-class AnswerService
+class AnswerService implements AnswerServiceInterface
 {
-    protected $answerModel;
+    protected AnswerModel $answerModel;
 
-    public function __construct()
+    public function __construct(AnswerModel $answerModel)
     {
-        $this->answerModel = model(AnswerModel::class);
+        $this->answerModel = $answerModel;
+    }
+
+    public function getAnswersByQuestionId(int $questionId): array
+    {
+        return $this->answerModel->where('question_id', $questionId)->findAll();
     }
 
     public function addAnswer(int $questionId, string $label)
@@ -24,10 +30,5 @@ class AnswerService
     public function deleteAnswer(int $id)
     {
         return $this->answerModel->delete($id);
-    }
-
-    public function getAnswersByQuestionId(int $questionId)
-    {
-        return $this->answerModel->where('question_id', $questionId)->findAll();
     }
 }
