@@ -3,7 +3,10 @@
 namespace Config;
 
 use App\Models\AnswerModel;
+use App\Models\QuestionModel;
 use App\Models\QuestionnaireModel;
+use App\Models\SubmissionAnswerModel;
+use App\Models\SubmissionModel;
 use App\Services\AnswerService;
 use App\Services\QuestionnaireService;
 use App\Services\QuestionService;
@@ -51,7 +54,10 @@ class Services extends BaseService
             return static::getSharedInstance('questionService');
         }
 
-        return new QuestionService();
+        return new QuestionService(
+            model(QuestionModel::class),
+            model(AnswerModel::class)
+        );
     }
 
     public static function answerService($getShared = true)
@@ -69,6 +75,11 @@ class Services extends BaseService
             return static::getSharedInstance('submissionService');
         }
 
-        return new SubmissionService();
+        return new SubmissionService(
+            model(SubmissionModel::class),
+            model(SubmissionAnswerModel::class),
+            service('questionService'),
+            service('questionnaireService')
+        );
     }
 }
