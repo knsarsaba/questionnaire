@@ -5,10 +5,12 @@ namespace App\Controllers;
 class QuestionnaireController extends BaseController
 {
     protected $questionnaireService;
+    protected $questionService;
 
     public function __construct()
     {
         $this->questionnaireService = service('questionnaireService');
+        $this->questionService = service('questionService');
     }
 
     public function index()
@@ -16,6 +18,19 @@ class QuestionnaireController extends BaseController
         $questionnaires = $this->questionnaireService->getAllQuestionnaires();
 
         return view('questionnaires/index', ['questionnaires' => $questionnaires]);
+    }
+
+    public function view($id)
+    {
+        $questionnaire = $this->questionnaireService->getQuestionnaireById($id);
+        if (!$questionnaire) {
+            return redirect()->to('questionnaires')->with('error', 'Questionnaire not found');
+        }
+
+        return view('questionnaires/view', [
+            'questionnaire' => $questionnaire,
+            'questions' => $this->questionService->getQuestionsByQuestionnaireId($id),
+        ]);
     }
 
     public function create()
