@@ -6,11 +6,31 @@ class SubmissionController extends BaseController
 {
     protected $submissionService;
     protected $questionService;
+    protected $questionnaireService;
 
     public function __construct()
     {
         $this->submissionService = service('submissionService');
         $this->questionService = service('questionService');
+        $this->questionnaireService = service('questionnaireService');
+    }
+
+    public function index()
+    {
+        $questionnaireId = $this->request->getGet('questionnaire_id');
+        if (!$questionnaireId) {
+            return redirect()->to('/questionnaires')->with('error', 'No questionnaire selected.');
+        }
+
+        $questionnaire = $this->questionnaireService->getQuestionnaireById($questionnaireId);
+        if (!$questionnaire) {
+            return redirect()->to('/questionnaires')->with('error', 'Questionnaire not found.');
+        }
+
+        return view('submissions/index', [
+            'questionnaire' => $questionnaire,
+            'submissions' => $this->submissionService->getSubmissionsByQuestionnaireId($questionnaireId),
+        ]);
     }
 
     public function create($questionnaireId)
@@ -18,5 +38,35 @@ class SubmissionController extends BaseController
         $questions = $this->questionService->getQuestionsByQuestionnaireId($questionnaireId);
 
         return view('submissions/create', ['questions' => $questions, 'questionnaireId' => $questionnaireId]);
+    }
+
+    public function store()
+    {
+        $questionnaireId = $this->request->getPost('questionnaire_id');
+        $answers = $this->request->getPost('answers');
+
+        if (!$answers) {
+            return redirect()->to('submissions/create/'.$questionnaireId)->with('error', 'Please answer all questions.');
+        }
+
+        $submissionId = $this->submissionService->submitQuestionnaire($questionnaireId, $answers);
+
+        return redirect()->to('questionnaires')->with('success', 'Submission successful!');
+    }
+
+    public function show($submissionId)
+    {
+        $submission = $this->submissionService->getSubmissionById($submissionId);
+        if (!$submission) {
+            return redirect()->to('/submissions')->with('error', 'Submission not found.');
+        }
+
+        $questionnaire = $this->questionnaireService->getQuestionnaireById($submission['questionnaire_id']);
+
+        return view('submissions/show', [
+            'submission' => $submission,
+            'questionnaire' => $questionnaire,
+            'answers' => $this->submissionService->getSubmissionAnswers($submissionId),
+        ]);
     }
 }

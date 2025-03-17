@@ -23,6 +23,8 @@
                         <form action="<?= site_url('questionnaires/delete/' . $questionnaire['id']) ?>" method="post" class="d-inline">
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
+                        <a href="<?= site_url('submissions/create/' . $questionnaire['id']) ?>" class="btn btn-success btn-sm">Submit Answer</a>
+                        <a href="<?= site_url('submissions?questionnaire_id=' . $questionnaire['id']) ?>" class="btn btn-secondary btn-sm">View Submissions</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
