@@ -2,6 +2,9 @@
 
 namespace Config;
 
+use App\Services\QuestionnaireService;
+use App\Services\QuestionService;
+use App\Services\SubmissionService;
 use CodeIgniter\Config\BaseService;
 
 /**
@@ -29,4 +32,31 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+    public static function questionnaireService($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('questionnaireService');
+        }
+
+        return new QuestionnaireService();
+    }
+
+    public static function questionService($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('questionService');
+        }
+
+        return new QuestionService();
+    }
+
+    public static function submissionService($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('submissionService');
+        }
+
+        return new SubmissionService();
+    }
 }
