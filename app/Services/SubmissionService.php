@@ -54,7 +54,10 @@ class SubmissionService
 
         foreach ($submissions as &$submission) {
             $submission['answers'] = $this->submissionAnswerModel
-                ->where('submission_id', $submission['id'])
+                ->select('submission_answers.*, questions.name as question_name, answers.label as answer_text')
+                ->join('questions', 'questions.id = submission_answers.question_id')
+                ->join('answers', 'answers.id = submission_answers.answer_id')
+                ->where('submission_answers.submission_id', $submission['id'])
                 ->findAll();
         }
 
@@ -64,5 +67,43 @@ class SubmissionService
     public function getSubmissionAnswers(int $submissionId)
     {
         return $this->submissionAnswerModel->getAnswersBySubmissionId($submissionId);
+    }
+
+    public function exportSubmissionsToCSV($questionnaireId)
+    {
+        $submissions = $this->getSubmissionsByQuestionnaireId($questionnaireId);
+
+        if (empty($submissions)) {
+            return redirect()->back()->with('error', 'No submissions found.');
+        }
+
+        $filename = 'questionnaire_'.$questionnaireId.'_submissions.csv';
+
+        $output = fopen('php://temp', 'w'); // Use temporary memory for CSV generation
+
+        // Write CSV header
+        fputcsv($output, ['Submission ID', 'Question ID', 'Question Name', 'Answer ID', 'Answer Text']);
+
+        // Write submission data
+        foreach ($submissions as $submission) {
+            foreach ($submission['answers'] as $answer) {
+                fputcsv($output, [
+                    $submission['id'],
+                    $answer['question_id'],
+                    $answer['question_name'],
+                    $answer['answer_id'],
+                    $answer['answer_text'],
+                ]);
+            }
+        }
+
+        rewind($output);
+        $csvData = stream_get_contents($output);
+        fclose($output);
+
+        return response()
+            ->setHeader('Content-Type', 'text/csv')
+            ->setHeader('Content-Disposition', 'attachment; filename="'.$filename.'"')
+            ->setBody($csvData);
     }
 }

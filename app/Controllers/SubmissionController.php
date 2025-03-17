@@ -69,4 +69,9 @@ class SubmissionController extends BaseController
             'answers' => $this->submissionService->getSubmissionAnswers($submissionId),
         ]);
     }
+
+    public function export($questionnaireId)
+    {
+        return $this->submissionService->exportSubmissionsToCSV($questionnaireId);
+    }
 }
