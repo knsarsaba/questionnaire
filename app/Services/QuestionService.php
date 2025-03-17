@@ -4,16 +4,35 @@ namespace App\Services;
 
 use App\Models\AnswerModel;
 use App\Models\QuestionModel;
+use App\Services\Contracts\QuestionServiceInterface;
 
-class QuestionService
+class QuestionService implements QuestionServiceInterface
 {
-    protected $questionModel;
-    protected $answerModel;
+    protected QuestionModel $questionModel;
+    protected AnswerModel $answerModel;
 
-    public function __construct()
+    public function __construct(
+        QuestionModel $questionModel,
+        AnswerModel $answerModel
+    ) {
+        $this->questionModel = $questionModel;
+        $this->answerModel = $answerModel;
+    }
+
+    public function getQuestionById(int $id)
     {
-        $this->questionModel = model(QuestionModel::class);
-        $this->answerModel = model(AnswerModel::class);
+        return $this->questionModel->find($id);
+    }
+
+    public function getQuestionsByQuestionnaireId($questionnaireId): array
+    {
+        $questions = $this->questionModel->where('questionnaire_id', $questionnaireId)->findAll();
+
+        foreach ($questions as &$question) {
+            $question['answers'] = $this->answerModel->where('question_id', $question['id'])->findAll();
+        }
+
+        return $questions;
     }
 
     public function addQuestion(int $questionnaireId, string $name)
@@ -27,21 +46,5 @@ class QuestionService
     public function deleteQuestion(int $id)
     {
         return $this->questionModel->delete($id);
-    }
-
-    public function getQuestionsByQuestionnaireId($questionnaireId)
-    {
-        $questions = $this->questionModel->where('questionnaire_id', $questionnaireId)->findAll();
-
-        foreach ($questions as &$question) {
-            $question['answers'] = $this->answerModel->where('question_id', $question['id'])->findAll();
-        }
-
-        return $questions;
-    }
-
-    public function getQuestionById(int $id)
-    {
-        return $this->questionModel->find($id);
     }
 }
