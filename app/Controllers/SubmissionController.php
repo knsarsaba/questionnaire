@@ -74,4 +74,21 @@ class SubmissionController extends BaseController
     {
         return $this->submissionService->exportSubmissionsToCSV($questionnaireId);
     }
+
+    public function import()
+    {
+        $file = $this->request->getFile('csv_file');
+
+        if (!$file->isValid() || $file->getExtension() !== 'csv') {
+            return redirect()->back()->with('error', 'Invalid file. Please upload a CSV file.');
+        }
+
+        $importResult = $this->submissionService->importSubmissionsFromCSV($file);
+
+        if ($importResult['status'] === 'error') {
+            return redirect()->back()->with('error', $importResult['message']);
+        }
+
+        return redirect()->back()->with('success', 'Submissions imported successfully.');
+    }
 }

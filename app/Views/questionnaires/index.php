@@ -33,5 +33,14 @@
     </table>
 
     <a href="<?= site_url('questionnaires/create') ?>" class="btn btn-primary mb-3">Create Questionnaire</a>
+
+    <h3 class="mt-4">Import Submissions</h3>
+    <form action="<?= site_url('submissions/import') ?>" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="csv_file" class="form-label">Upload CSV File:</label>
+            <input type="file" name="csv_file" id="csv_file" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Import Submissions</button>
+    </form>
 </div>
 <?= $this->endSection() ?>

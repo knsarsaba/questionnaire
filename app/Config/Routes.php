@@ -24,3 +24,4 @@ $routes->get('submissions', 'SubmissionController::index');
 $routes->get('submissions/(:num)', 'SubmissionController::show/$1');
 $routes->get('submissions/create/(:num)', 'SubmissionController::create/$1');
 $routes->post('submissions/store', 'SubmissionController::store');
+$routes->post('submissions/import', 'SubmissionController::import');

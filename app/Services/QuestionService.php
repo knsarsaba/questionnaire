@@ -39,4 +39,9 @@ class QuestionService
 
         return $questions;
     }
+
+    public function getQuestionById(int $id)
+    {
+        return $this->questionModel->find($id);
+    }
 }
