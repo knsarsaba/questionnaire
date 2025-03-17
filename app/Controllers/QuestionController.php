@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Services\Contracts\QuestionServiceInterface;
+
 class QuestionController extends BaseController
 {
-    protected $questionService;
+    protected QuestionServiceInterface $questionService;
 
     public function __construct()
     {

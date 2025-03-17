@@ -2,11 +2,15 @@
 
 namespace App\Controllers;
 
+use App\Services\Contracts\QuestionnaireServiceInterface;
+use App\Services\Contracts\QuestionServiceInterface;
+use App\Services\Contracts\SubmissionServiceInterface;
+
 class SubmissionController extends BaseController
 {
-    protected $submissionService;
-    protected $questionService;
-    protected $questionnaireService;
+    protected SubmissionServiceInterface $submissionService;
+    protected QuestionServiceInterface $questionService;
+    protected QuestionnaireServiceInterface $questionnaireService;
 
     public function __construct()
     {
