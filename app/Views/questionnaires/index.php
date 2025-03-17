@@ -18,7 +18,7 @@
                     <td><?= esc($questionnaire['id']) ?></td>
                     <td><?= esc($questionnaire['name']) ?></td>
                     <td>
-                        <a href="<?= site_url('questionnaires/' . $questionnaire['id']) ?>" class="btn btn-info btn-sm">View</a>
+                        <a href="<?= site_url('questionnaires/' . $questionnaire['id']) ?>" class="btn btn-info btn-sm">View Questions</a>
                         <a href="<?= site_url('questionnaires/edit/' . $questionnaire['id']) ?>" class="btn btn-warning btn-sm">Edit</a>
                         <form action="<?= site_url('questionnaires/delete/' . $questionnaire['id']) ?>" method="post" class="d-inline">
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
