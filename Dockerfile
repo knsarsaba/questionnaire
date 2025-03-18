@@ -12,11 +12,19 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
+    curl \
+    git \
     default-mysql-client
 
 # Install PHP extensions
 RUN docker-php-ext-configure intl && \
     docker-php-ext-install intl mbstring pdo pdo_mysql mysqli zip xml
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copy application files
+COPY . .
 
 # Expose port 8000 for the built-in PHP server
 EXPOSE 8000

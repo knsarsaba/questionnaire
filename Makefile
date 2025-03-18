@@ -3,8 +3,11 @@ DB_CONTAINER=questionnaire_db
 APP_CONTAINER=questionnaire_app
 ENV_FILE=.env
 
-include $(ENV_FILE)
-export $(shell sed 's/=.*//' $(ENV_FILE))
+# Include .env only if it exists
+ifneq ("$(wildcard $(ENV_FILE))","")
+    include $(ENV_FILE)
+    export $(shell sed 's/=.*//' $(ENV_FILE))
+endif
 
 # Default target
 .PHONY: help
@@ -127,3 +130,17 @@ test-filter:
 .PHONY: test-coverage
 test-coverage:
 	docker exec -it $(APP_CONTAINER) php vendor/bin/phpunit --coverage-text
+
+.PHONY: composer-install
+composer-install:
+	docker exec -it $(APP_CONTAINER) composer install
+
+# Update Dependencies
+.PHONY: composer-update
+composer-update:
+	docker exec -it $(APP_CONTAINER) composer update
+
+# Dump Autoload
+.PHONY: composer-dump
+composer-dump:
+	docker exec -it $(APP_CONTAINER) composer dump-autoload

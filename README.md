@@ -34,11 +34,7 @@ Ensure you have the following installed:
    git clone <repository-url>
    cd <repository-folder>
    ```
-2. **Build and start the application using Docker Compose**
-   ```sh
-   make setup
-   ```
-3. **Open the .env file and update the following variables as needed:**
+2. **Copy `env` file to `.env` file and update the following variables:**
    ```
    CI_ENVIRONMENT = development
 
@@ -55,23 +51,31 @@ Ensure you have the following installed:
    DB_USER=<your-database-use> (eg. user)
    DB_PASS=<your-database-password> (eg. root)
    ```
-4. **Check logs to see if MySQL is ready for accepting connections**
+3. **Build and start the application**
+   ```sh
+   make setup
+   ```
+4. **Install dependencies**
+   ```sh
+   make composer-install && make composer-dump
+   ```
+5. **Check logs to see if MySQL is ready to accept connections** (_It takes a while_)
    ```
    make logs
    ```
-6. **When you see the following logs, you can proceed in the next step**
+6. **When you see the following logs, you can proceed to the next step**
    ```
    questionnaire_db | 2025-03-18T01:58:31.082046Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.4.4'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
    ```
-5. **Run database migrations:**
+7. **Run database migrations:**
    ```sh
    make migrate
    ```
-6. **Access the application:**
+8. **Access the application:**
    ```
    http://localhost:8000/
    ```
-7. **Run tests:**
+9. **Run tests:**
    ```
    make test
    ```
