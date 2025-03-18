@@ -1,68 +1,83 @@
-# CodeIgniter 4 Application Starter
+# **Questionnaire App**
 
-## What is CodeIgniter?
+## **Overview**
+This project is a web-based questionnaire application built using CodeIgniter 4. The application allows users to answer questionnaires, with each question having multiple options (each with a label and value). The submissions can then be exported and imported back into the application.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## **Features**
+- **Web UI** for users to interact with the questionnaire.
+- **Import/export submissions** for users to easily import/export assessment questions
+- **Dockerized** for ease of installation.
+- **Makefile** for automation of common development tasks.
+- **MVC Architecture** using CodeIgniter 4.
+- **Bootstrap** for frontend styling.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## **User stories**
+- As a user, I should be able to create a questionnaire
+- As a user, I should be able to add questions to a questionnaire
+- As a user, I should be able to add answers to a question
+- As a user, I should be able to submit answers to a questionnaire
+- As a user, I should be able to export submitted answers to a CSV file
+- As a user, I should be able to import a CSV file of previously submitted answers
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## **Setup Instructions**
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+### **Prerequisites**
+Ensure you have the following installed:
+- Docker
+- Docker Compose
+- Make
 
-## Installation & updates
+### **Installation Steps**
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+1. **Clone the repository:**
+   ```sh
+   git clone <repository-url>
+   cd <repository-folder>
+   ```
+2. **Build and start the application using Docker Compose**
+   ```sh
+   make setup
+   ```
+3. **Open the .env file and update the following variables as needed:**
+   ```
+   CI_ENVIRONMENT = development
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+   database.default.hostname = <your-database-host> (eg. database)
+   database.default.database = <your-database-name> (eg. questionnaire)
+   database.default.username = <your-database-use> (eg. user)
+   database.default.password = <your-database-password> (eg. root)
+   database.default.DBDriver = MySQLi
+   database.default.DBPrefix =
+   database.default.port = <your-database-port> (eg. 3306)
 
-## Setup
+   DB_HOST=<your-database-host> (eg. database)
+   DB_NAME=<your-database-name> (eg. questionnaire)
+   DB_USER=<your-database-use> (eg. user)
+   DB_PASS=<your-database-password> (eg. root)
+   ```
+4. **Check logs to see if MySQL is ready for accepting connections**
+   ```
+   make logs
+   ```
+6. **When you see the following logs, you can proceed in the next step**
+   ```
+   questionnaire_db | 2025-03-18T01:58:31.082046Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.4.4'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+   ```
+5. **Run database migrations:**
+   ```sh
+   make migrate
+   ```
+6. **Access the application:**
+   ```
+   http://localhost:8000/
+   ```
+7. **Run tests:**
+   ```
+   make test
+   ```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 7.4 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> The end of life date for PHP 7.4 was November 28, 2022.
-> The end of life date for PHP 8.0 was November 26, 2023.
-> If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> The end of life date for PHP 8.1 will be November 25, 2024.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+## **Assumptions**
+1. The project was implemented as a web-based application rather than a command-line tool
+2. The questions in a questionnare are multiple-choice
+3. Users are able to populate previously answered assessment questions by importing data from a CSV file
+4. Users are able to export data to a CSV file for convenience of importing data back into the application
